@@ -3,7 +3,7 @@ import os
 import re
 
 tmp = 'temp_rom_dir'
-out = '_output'
+out = '../clean_romset'
 ltmp = './' + tmp
 
 f_mark = '\[f\]'
@@ -68,7 +68,7 @@ def prepare_archive(arch_filename, handle_lst, num, total):
         store(toX)
         return
     else:
-        print 'err: Good not found'
+        # print 'err: Good not found'
         return arch_filename
 
 call(['mkdir', tmp], stdout=devnull)
@@ -79,7 +79,7 @@ err_lst = filter(exists, \
             map(lambda (idx, filename): \
                 prepare_archive(filename, handle_rom_lst, idx, dirListLen), enumerate(dirList)))
 if (len(err_lst) > 0):
-    logfile = open('log.txt', 'w')
+    logfile = open('../missing_in_clean.txt', 'w')
     for err in err_lst:
         print>>logfile, err
     logfile.close()
