@@ -16,6 +16,9 @@ eu = '\(E\)'
 
 devnull = open(os.devnull, 'w')
 
+def exists(it):
+    return (it is not None)
+
 def filter_by_good_codes(good, country, lst):
     return filter(lambda rom: re.search(good, rom) and re.search(country, rom), lst)
 
@@ -58,7 +61,7 @@ def handle_rom_lst(rom_dir):
 
 def prepare_archive(arch_filename, handle_lst, num, total):
     os.system('rm -rf ' + ltmp + '/*') # clean temp dir
-    print 'Working on file', num, 'of', total, ':', arch_filename
+    print 'Working on file', num + 1, 'of', total, ':', arch_filename
     call(['7za', 'x', arch_filename, '-o' + tmp], stdout=devnull)
     toX = handle_lst(ltmp)
     if (len(toX) > 0):
@@ -68,14 +71,13 @@ def prepare_archive(arch_filename, handle_lst, num, total):
         print 'err: Good not found'
         return arch_filename
 
-x = handle_rom_lst('./tmp1')
-print 'err:::: ', x
-
 call(['mkdir', tmp], stdout=devnull)
 call(['mkdir', out], stdout=devnull)
 dirList = filter(lambda f: os.path.isfile(f) and f.endswith('.7z'), os.listdir('.'))
 dirListLen = len(dirList)
-err_lst = map(lambda (idx, filename): prepare_archive(filename, handle_rom_lst, idx, dirListLen), enumerate(dirList))
+err_lst = filter(exists, \
+            map(lambda (idx, filename): \
+                prepare_archive(filename, handle_rom_lst, idx, dirListLen), enumerate(dirList)))
 if (len(err_lst) > 0):
     logfile = open('log.txt', 'w')
     for err in err_lst:
