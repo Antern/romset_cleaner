@@ -34,22 +34,22 @@ def store1(filename, x):
 
 def handle_rom_lst(rom_dir):
     romlst = os.listdir(rom_dir)
-    # check [f] or [!] with (u)
-    lst = filter_by_good_codes(f_mark, usa, romlst) \
+    # check [!] or [a] or [f] with (u)
+    lst = filter_by_good_codes(good_mark, usa, romlst) \
             or filter_by_good_codes(a_mark, usa, romlst) \
-            or filter_by_good_codes(good_mark, usa, romlst)
+            or filter_by_good_codes(f_mark, usa, romlst)
     if (len(lst) > 0):
         return lst[0]
     # check f or ! without (x) and (xx)
-    lst = filter_by_good_no_country(f_mark, romlst) \
+    lst = filter_by_good_no_country(good_mark, romlst) \
             or filter_by_good_no_country(a_mark, romlst) \
-            or filter_by_good_no_country(good_mark, romlst)
+            or filter_by_good_no_country(f_mark, romlst)
     if (len(lst) > 0):
         return lst[0]
     # check [f] or [!] with (e)
-    lst = filter_by_good_codes(f_mark, eu, romlst) \
+    lst = filter_by_good_codes(good_mark, eu, romlst) \
             or filter_by_good_codes(a_mark, eu, romlst) \
-            or filter_by_good_codes(good_mark, eu, romlst)
+            or filter_by_good_codes(f_mark, eu, romlst)
     if (len(lst) > 0):
         return lst[0]
     # check [o] with (u) or (e)
